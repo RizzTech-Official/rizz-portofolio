@@ -2,6 +2,8 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { LayoutDashboard, Info, Briefcase, Award, Settings, Mail, LogOut, Menu, X, Sparkles, ExternalLink, Moon, Sun } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import logoTim from '../../assets/logo.jpg';
+
 
 const navItems = [
   { path: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
@@ -53,9 +55,13 @@ export default function AdminLayout() {
       `}>
         {/* Logo Section */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
-              <Sparkles className="w-5 h-5 text-white" />
+          <div className="flex items-center gap-1">
+            <div className="w-10 h-10 bg-primary-500 rounded-xl mr-1 flex items-center justify-center shadow-lg shadow-primary-500/30 transform group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+              <img
+                src={logoTim}
+                alt="Logo Tim"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h1 className="text-lg font-bold text-white">RizzTech</h1>
