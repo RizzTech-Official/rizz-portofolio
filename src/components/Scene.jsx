@@ -92,7 +92,7 @@ export default function Scene({ theme }) {
     primary: "#6366f1", // Indigo 500 - Vibrant but professional
     secondary: "#3b82f6", // Blue 500
     tertiary: "#94a3b8", // Slate 400
-    snow: "#cbd5e1" // Slate 300 - Visible against light bg
+    snow: "#000000" // Slate 300 - Visible against light bg
   };
 
   return (
