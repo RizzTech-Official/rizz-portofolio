@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply antialiased text-gray-800 dark:text-gray-100 bg-[#f8fafc] dark:bg-dark-bg transition-colors duration-300;
+  }
+
+  /* Custom Selection Color */
+  ::selection {
+    @apply bg-primary-500/15 text-primary-700 dark:text-primary-300;
+  }
+}
+
+@layer components {
+
+  /* Improved card shadows for light theme - crisper, more modern */
+  .card-light {
+    @apply bg-white border border-slate-200/60 shadow-[0_2px_12px_-4px_rgba(0, 0, 0, 0.04)] hover:shadow-[0_4px_16px_-4px_rgba(0, 0, 0, 0.08)] hover:border-slate-300/80 transition-all duration-300;
+  }
+
+  /* Form inputs light theme - cleaner look */
+  .input-light {
+    @apply bg-white border-slate-200 text-slate-800 placeholder-slate-400 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 shadow-sm transition-all;
+  }
+}
+
+/* Custom Scrollbar - minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 dark:bg-gray-700 rounded-full hover:bg-slate-300 dark:hover:bg-primary-600 transition-colors;
+}
+
+/* Utilities for glassmorphism */
+.glass {
+  @apply bg-white/70 dark:bg-black/40 backdrop-blur-xl border border-white/40 dark:border-white/5 shadow-xl shadow-black/5;
+}
+
+/* Improved focus states */
+*:focus-visible {
+  @apply outline-none ring-2 ring-primary-500/40 ring-offset-1 ring-offset-white dark:ring-offset-dark-bg;
+}
+
+/* Better text contrast in light mode */
+.text-muted {
+  @apply text-slate-500 dark:text-gray-400;
+}
