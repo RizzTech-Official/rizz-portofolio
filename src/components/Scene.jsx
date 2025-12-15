@@ -3,15 +3,15 @@ import { useFrame } from '@react-three/fiber';
 import { Float, PerspectiveCamera, OrbitControls, Sparkles, PointMaterial, Points, Sphere, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-function Snow({ count = 1000, color }) {
+function Snow({ count = 1500, color, speed = 1 }) {
   const points = useRef();
 
   const particlesPosition = useMemo(() => {
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20; // x: -10 to 10
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20; // y: -10 to 10
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20; // z: -10 to 10
+      positions[i * 3] = (Math.random() - 0.5) * 25;     // X: Melebar ke samping
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 25; // Y: Atas ke Bawah (Area lebih luas)
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 25; // Z: Kedalaman
     }
     return positions;
   }, [count]);
@@ -20,15 +20,16 @@ function Snow({ count = 1000, color }) {
     if (points.current) {
       const positions = points.current.geometry.attributes.position.array;
       for (let i = 0; i < count; i++) {
-        // Update Y
-        positions[i * 3 + 1] -= delta * (0.5 + Math.random() * 0.5); // Fall speed
+        
+        positions[i * 3 + 1] -= delta * (0.5 + Math.random() * 0.5) * speed; 
 
-        // Sway X
         positions[i * 3] += Math.sin(state.clock.elapsedTime + i) * 0.002;
 
-        // Reset if too low
         if (positions[i * 3 + 1] < -10) {
           positions[i * 3 + 1] = 10;
+          
+          positions[i * 3] = (Math.random() - 0.5) * 20; 
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
         }
       }
       points.current.geometry.attributes.position.needsUpdate = true;
@@ -92,7 +93,7 @@ export default function Scene({ theme }) {
     primary: "#6366f1", // Indigo 500 - Vibrant but professional
     secondary: "#3b82f6", // Blue 500
     tertiary: "#94a3b8", // Slate 400
-    snow: "#cbd5e1" // Slate 300 - Visible against light bg
+    snow: "#000000" // Slate 300 - Visible against light bg
   };
 
   return (
