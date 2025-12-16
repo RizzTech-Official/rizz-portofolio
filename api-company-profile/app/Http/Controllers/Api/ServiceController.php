@@ -25,7 +25,8 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title_en' => 'required|string|max:255',
+            'title_id' => 'nullable|string|max:255',
         ]);
 
         $service = Service::create($request->all());

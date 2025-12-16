@@ -9,13 +9,21 @@ class Hero extends Model
     protected $table = 'hero';
 
     protected $fillable = [
-        'badge_text',
-        'title_line1',
-        'title_line2',
-        'description',
-        'button1_text',
+        'badge_text_en',
+        'title_line1_en',
+        'title_line2_en',
+        'description_en',
+        'button1_text_en',
+        'button2_text_en',
+
+        'badge_text_id',
+        'title_line1_id',
+        'title_line2_id',
+        'description_id',
+        'button1_text_id',
+        'button2_text_id',
+
         'button1_link',
-        'button2_text',
         'button2_link',
     ];
 }
