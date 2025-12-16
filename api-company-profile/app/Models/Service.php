@@ -8,7 +8,11 @@ class Service extends Model
 {
     protected $fillable = [
         'icon_name',
-        'title',
-        'description',
+        
+        'title_en',
+        'description_en',
+        
+        'title_id',
+        'description_id',
     ];
 }
