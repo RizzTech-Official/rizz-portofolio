@@ -3,17 +3,15 @@ import { heroAPI } from '../../api';
 import { Save, AlertCircle, CheckCircle, Sparkles } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 
-
 export default function HeroPage() {
   const [formData, setFormData] = useState({
-    badge_text: '',
-    title_line1: '',
-    title_line2: '',
-    description: '',
-    button1_text: '',
-    button1_link: '',
-    button2_text: '',
-    button2_link: '',
+    badge_text_en: '', badge_text_id: '',
+    title_line1_en: '', title_line1_id: '',
+    title_line2_en: '', title_line2_id: '',
+    description_en: '', description_id: '',
+    button1_text_en: '', button1_text_id: '',
+    button2_text_en: '', button2_text_id: '',
+    button1_link: '', button2_link: '',
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,13 +49,11 @@ export default function HeroPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  if (loading) return <div className="flex justify-center h-64 items-center"><LoadingSpinner size="lg" /></div>;
 
   return (
     <div>
@@ -67,15 +63,15 @@ export default function HeroPage() {
         </div>
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Hero Section</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Customize your landing page header</p>
+          <p className="text-sm text-gray-500">Manage Dual Language Content</p>
         </div>
       </div>
 
       {message.text && (
         <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.type === 'success'
-          ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800'
-          : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'
-          }`}>
+          ? 'bg-green-50 text-green-600 border-green-200'
+          : 'bg-red-50 text-red-600 border-red-200'} border`
+        }>
           {message.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
           <span>{message.text}</span>
         </div>
@@ -84,112 +80,113 @@ export default function HeroPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Badge & Titles Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Headlines</h2>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Badge Text</label>
-              <input
-                type="text"
-                value={formData.badge_text || ''}
-                onChange={(e) => setFormData({ ...formData, badge_text: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                placeholder="🚀 Shaping the Digital Future"
-              />
-            </div>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 border-b pb-2 dark:border-gray-700">Headlines</h2>
+
+          <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title Line 1</label>
+                <label className="block text-xs font-bold text-gray-500 mb-1">Badge Text (EN)</label>
                 <input
                   type="text"
-                  value={formData.title_line1 || ''}
-                  onChange={(e) => setFormData({ ...formData, title_line1: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                  placeholder="Innovating"
-                />
+                  name="badge_text_en"
+                  value={formData.badge_text_en || ''}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:text-white"
+                  placeholder="Shaping Future" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title Line 2 (Gradient)</label>
+                <label className="block text-xs font-bold text-primary-600 mb-1">Badge Text (ID)</label>
                 <input
                   type="text"
-                  value={formData.title_line2 || ''}
-                  onChange={(e) => setFormData({ ...formData, title_line2: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                  placeholder="The Future"
-                />
+                  name="badge_text_id"
+                  value={formData.badge_text_id || ''}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-primary-100 rounded-xl bg-primary-50/20 dark:bg-primary-900/10 dark:text-white"
+                  placeholder="Merancang Masa Depan" />
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
-              <textarea
-                rows={3}
-                value={formData.description || ''}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                placeholder="We are RizzTech..."
-              />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-500 mb-1">Title Line 1 (EN)</label>
+                <input
+                  type="text"
+                  name="title_line1_en"
+                  value={formData.title_line1_en || ''}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:text-white" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-primary-600 mb-1">Title Line 1 (ID)</label>
+                <input
+                  type="text"
+                  name="title_line1_id"
+                  value={formData.title_line1_id || ''}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-primary-100 rounded-xl bg-primary-50/20 dark:bg-primary-900/10 dark:text-white" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-500 mb-1">Title Line 2 (EN)</label>
+                <input
+                  type="text"
+                  name="title_line2_en"
+                  value={formData.title_line2_en || ''}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:text-white" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-primary-600 mb-1">Title Line 2 (ID)</label>
+                <input
+                  type="text"
+                  name="title_line2_id"
+                  value={formData.title_line2_id || ''}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-primary-100 rounded-xl bg-primary-50/20 dark:bg-primary-900/10 dark:text-white" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-500 mb-1">Description (EN)</label>
+                <textarea rows={3} name="description_en" value={formData.description_en || ''} onChange={handleChange} className="w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:text-white" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-primary-600 mb-1">Deskripsi (ID)</label>
+                <textarea rows={3} name="description_id" value={formData.description_id || ''} onChange={handleChange} className="w-full px-4 py-2 border border-primary-100 rounded-xl bg-primary-50/20 dark:bg-primary-900/10 dark:text-white" />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Buttons Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Call to Action Buttons</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 border-b pb-2 dark:border-gray-700">Buttons</h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl border border-primary-200 dark:border-primary-800">
-              <h3 className="font-medium text-primary-700 dark:text-primary-300">Primary Button</h3>
-              <div>
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Text</label>
-                <input
-                  type="text"
-                  value={formData.button1_text || ''}
-                  onChange={(e) => setFormData({ ...formData, button1_text: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Get Started"
-                />
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold">Primary Button</h3>
+              <div className="grid grid-cols-2 gap-2">
+                <input type="text" name="button1_text_en" value={formData.button1_text_en || ''} onChange={handleChange} placeholder="EN Text" className="px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white" />
+                <input type="text" name="button1_text_id" value={formData.button1_text_id || ''} onChange={handleChange} placeholder="ID Text" className="px-3 py-2 border border-primary-100 bg-primary-50/20 dark:bg-primary-900/10 dark:text-white rounded-lg" />
               </div>
-              <div>
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Link</label>
-                <input
-                  type="text"
-                  value={formData.button1_link || ''}
-                  onChange={(e) => setFormData({ ...formData, button1_link: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="#contact"
-                />
-              </div>
+              <input type="text" name="button1_link" value={formData.button1_link || ''} onChange={handleChange} placeholder="Link URL" className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white" />
             </div>
-            <div className="space-y-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
-              <h3 className="font-medium text-gray-700 dark:text-gray-300">Secondary Button</h3>
-              <div>
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Text</label>
-                <input
-                  type="text"
-                  value={formData.button2_text || ''}
-                  onChange={(e) => setFormData({ ...formData, button2_text: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="Learn More"
-                />
+
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold">Secondary Button</h3>
+              <div className="grid grid-cols-2 gap-2">
+                <input type="text" name="button2_text_en" value={formData.button2_text_en || ''} onChange={handleChange} placeholder="EN Text" className="px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white" />
+                <input type="text" name="button2_text_id" value={formData.button2_text_id || ''} onChange={handleChange} placeholder="ID Text" className="px-3 py-2 border border-primary-100 bg-primary-50/20 dark:bg-primary-900/10 dark:text-white rounded-lg" />
               </div>
-              <div>
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Link</label>
-                <input
-                  type="text"
-                  value={formData.button2_link || ''}
-                  onChange={(e) => setFormData({ ...formData, button2_link: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  placeholder="#about"
-                />
-              </div>
+              <input type="text" name="button2_link" value={formData.button2_link || ''} onChange={handleChange} placeholder="Link URL" className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white" />
             </div>
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={saving}
-          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 disabled:opacity-50 text-white font-semibold rounded-xl transition-all shadow-lg shadow-primary-500/25"
-        >
-          <Save size={20} />
+        <button type="submit" disabled={saving} className="flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-lg">
+          <Save size={20} /> 
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </form>
