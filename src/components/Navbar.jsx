@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import { Sun, Moon, Menu, X, Globe } from 'lucide-react';
 import logoTim from '../assets/logo.jpg';
+import { useLanguage } from '../context/LanguageContext';
 
 const Navbar = ({ theme, toggleTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { language, toggleLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,16 +18,19 @@ const Navbar = ({ theme, toggleTheme }) => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Contact', href: '#contact' },
+    { name: t('nav.home'), href: '#home' },
+    { name: t('nav.about'), href: '#about' },
+    { name: t('nav.services'), href: '#services' },
+    { name: t('nav.projects'), href: '#projects' },
+    { name: t('nav.pricing'), href: '#pricing' },
+    { name: t('nav.blog'), href: '#blog' },
+    { name: t('nav.contact'), href: '#contact' },
   ];
 
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 border-b ${scrolled
-        ? 'bg-white/90 dark:bg-dark-bg/90 backdrop-blur-md border-gray-200 dark:border-white/10 shadow-lg'
+        ? 'bg-white/95 dark:bg-dark-bg/90 backdrop-blur-md border-slate-200 dark:border-white/10 shadow-lg shadow-slate-900/5'
         : 'bg-transparent border-transparent'
         }`}
     >
@@ -41,8 +46,8 @@ const Navbar = ({ theme, toggleTheme }) => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className="font-bold text-2xl tracking-tight text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors">
-              Rizz<span className="text-primary-500">Tech</span>
+            <span className="font-bold text-2xl tracking-tight text-slate-900 dark:text-white group-hover:text-primary-600 transition-colors">
+              Rizz<span className="text-primary-600 dark:text-primary-500">Tech</span>
             </span>
           </div>
 
@@ -53,21 +58,31 @@ const Navbar = ({ theme, toggleTheme }) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="relative text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-white transition-colors group py-2"
+                  className="relative text-sm font-medium text-slate-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-white transition-colors group py-2"
                 >
                   {link.name}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
                 </a>
               ))}
 
-              <div className="w-[1px] h-6 bg-gray-200 dark:bg-gray-700 mx-4"></div> {/* Separator */}
+              <div className="w-[1px] h-6 bg-slate-300 dark:bg-gray-700 mx-4"></div> {/* Separator */}
 
               <button
                 onClick={toggleTheme}
-                className="p-2.5 rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-yellow-400 hover:bg-primary-100 dark:hover:bg-white/20 transition-all duration-300 shadow-sm hover:shadow-md"
+                className="p-2.5 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-yellow-400 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-white/20 transition-all duration-300 shadow-sm hover:shadow-md"
                 aria-label="Toggle Theme"
               >
                 {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+
+              {/* Language Toggle */}
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-gray-300 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-white/20 transition-all duration-300 shadow-sm hover:shadow-md text-sm font-medium"
+                aria-label="Toggle Language"
+              >
+                <Globe size={16} />
+                <span>{language === 'en' ? 'EN' : 'ID'}</span>
               </button>
             </div>
           </div>
@@ -115,6 +130,23 @@ const Navbar = ({ theme, toggleTheme }) => {
                   <span className="font-medium">{theme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}</span>
                   <span className="p-2 rounded-full bg-gray-100 dark:bg-white/10">
                     {theme === 'dark' ? <Sun size={18} className="text-yellow-400" /> : <Moon size={18} />}
+                  </span>
+                </button>
+
+                {/* Language Toggle Mobile */}
+                <button
+                  onClick={() => {
+                    toggleLanguage();
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center justify-between px-3 py-3 rounded-xl text-gray-700 dark:text-gray-200 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-white/5 transition-all mt-2"
+                >
+                  <span className="font-medium flex items-center gap-2">
+                    <Globe size={18} />
+                    {language === 'en' ? 'Switch to Indonesian' : 'Ganti ke English'}
+                  </span>
+                  <span className="px-2 py-1 rounded-lg bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-sm font-semibold">
+                    {language === 'en' ? 'EN' : 'ID'}
                   </span>
                 </button>
               </div>

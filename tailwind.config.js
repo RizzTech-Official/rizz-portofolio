@@ -20,6 +20,16 @@ export default {
           800: '#023e8a',
           900: '#03045e',
         },
+        // Light mode palette - higher contrast
+        light: {
+          bg: '#ffffff',
+          surface: '#f8fafc',       // slate-50
+          card: '#ffffff',
+          border: '#e2e8f0',        // slate-200
+          text: '#0f172a',          // slate-900 - darker for better contrast
+          muted: '#64748b',         // slate-500
+          heading: '#1e293b',       // slate-800
+        },
         // Custom dark mode palette - Lighter, cleaner
         dark: {
           bg: '#0f0f0f',         // Slightly lighter than pure black for depth

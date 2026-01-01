@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Mail, Phone, MapPin, Calendar, Search, Trash2, CheckCircle, AlertCircle, MessageSquare } from 'lucide-react';
+import { contactsAPI } from '../../api';
+import { Mail, MailOpen, Phone, MapPin, Calendar, Search, Trash2, CheckCircle, AlertCircle, MessageSquare, X } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import ContactDetailModal from '../../components/ContactDetailModal';
 
 
 export default function ContactsPage() {

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+    import { useEffect, useState } from 'react';
 import { certificatesAPI, uploadAPI } from '../../api';
-import { Plus, Edit, Trash2, X, Save, Award, Calendar, ExternalLink, Image, Upload } from 'lucide-react';
+import { Plus, Edit, Trash2, X, Save, Award, Calendar, ExternalLink, Image, Upload, Building2 } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 
 
@@ -172,7 +172,7 @@ export default function CertificatesPage() {
                 <div className="space-y-2 text-sm">
                   {cert.issuer && (
                     <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                      <Building size={14} className="text-gray-400" />
+                      <Building2 size={14} className="text-gray-400" />
                       <span className="line-clamp-1">{cert.issuer}</span>
                     </div>
                   )}

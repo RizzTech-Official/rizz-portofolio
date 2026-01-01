@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { aboutAPI, projectsAPI, certificatesAPI } from '../api';
+import { aboutAPI, projectsAPI } from '../api';
 import LoadingSpinner from './ui/LoadingSpinner';
-
+import { CheckCircle2, Users, Rocket, Target } from 'lucide-react';
+import { AnimatedCounter } from '../hooks/useCountUp.jsx';
 
 const About = () => {
   const [about, setAbout] = useState(null);
-  const [projects, setProjects] = useState([]);
-  const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,14 +15,8 @@ const About = () => {
 
   const loadData = async () => {
     try {
-      const [aboutRes, projectsRes, certsRes] = await Promise.all([
-        aboutAPI.get(),
-        projectsAPI.getAll(),
-        certificatesAPI.getAll(),
-      ]);
+      const aboutRes = await aboutAPI.get();
       setAbout(aboutRes.data);
-      setProjects(projectsRes.data.slice(0, 3)); // Show max 3 featured
-      setCertificates(certsRes.data);
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
@@ -31,17 +24,18 @@ const About = () => {
     }
   };
 
-  // Fallback projects if none from API
-  const displayProjects = projects.length > 0 ? projects : [
-    { title: 'E-Commerce Platform', tech_stack: 'React, Node.js', description: 'A full-featured online store.', image_url: 'https://images.unsplash.com/photo-1661956602116-aa6865609028?w=800' },
-    { title: 'Healthcare App', tech_stack: 'Flutter, Firebase', description: 'Patient management system.', image_url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800' },
-    { title: 'Finance Dashboard', tech_stack: 'React, D3.js', description: 'Investment tracking dashboard.', image_url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800' },
+  const stats = [
+    { label: 'Projects Delivered', value: 50, suffix: '+', icon: Rocket },
+    { label: 'Happy Clients', value: 30, suffix: '+', icon: Users },
+    { label: 'Success Rate', value: 100, suffix: '%', icon: Target },
   ];
 
-  // Fallback certificates
-  const displayCerts = certificates.length > 0
-    ? certificates.map(c => c.title)
-    : ['ISO 27001', 'AWS Partner', 'Google Cloud Certified', 'Meta Business Partner'];
+  const highlights = [
+    'Award-winning development team',
+    'Agile & transparent process',
+    '24/7 dedicated support',
+    'Industry best practices',
+  ];
 
   if (loading) {
     return (
@@ -52,8 +46,12 @@ const About = () => {
   }
 
   return (
-    <section id="about" className="py-24 bg-white dark:bg-dark-bg transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="py-24 bg-white dark:bg-dark-bg transition-colors duration-300 relative overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-primary-100/50 dark:bg-primary-900/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,129 +59,129 @@ const About = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <motion.span
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-block px-4 py-1.5 mb-4 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-300 font-semibold text-sm"
+          >
+            ✨ About Us
+          </motion.span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
             {about?.title || 'About RizzTech'}
           </h2>
-          <div className="w-24 h-1 bg-primary-500 mx-auto rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-purple-500 mx-auto rounded-full"></div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Image Column */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary-500 rounded-2xl transform rotate-3 scale-[1.02] opacity-20 -z-10"></div>
+            <div className="relative group">
+              {/* Decorative Elements */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl opacity-20 blur-xl group-hover:opacity-30 transition-opacity"></div>
+              <div className="absolute inset-0 bg-primary-500 rounded-2xl transform rotate-3 scale-[1.02] opacity-20"></div>
+
               <img
                 src={about?.image_url || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"}
                 alt="Team Collaboration"
-                className="rounded-2xl shadow-2xl w-full h-auto object-cover"
+                className="relative rounded-2xl shadow-2xl w-full h-auto object-cover"
               />
+
+              {/* Floating Stats Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="absolute -bottom-6 -right-6 bg-white dark:bg-dark-card rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-800"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-purple-600 rounded-xl flex items-center justify-center">
+                    <Rocket className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">5+</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Years Experience</p>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
 
+          {/* Content Column */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            className="space-y-6"
           >
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white leading-tight">
               Building the Future, One Line of Code at a Time
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-              {about?.description || 'At RizzTech, we believe in the power of technology to transform businesses.'}
+
+            <p className="text-slate-700 dark:text-gray-300 leading-relaxed text-lg">
+              {about?.description || 'At RizzTech, we believe in the power of technology to transform businesses. Our team of passionate developers, designers, and strategists work together to create digital solutions that drive real results.'}
             </p>
+
             {about?.mission && (
-              <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                <strong>Mission:</strong> {about.mission}
-              </p>
-            )}
-            {about?.vision && (
-              <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                <strong>Vision:</strong> {about.vision}
-              </p>
+              <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl border border-primary-100 dark:border-primary-800">
+                <p className="text-slate-800 dark:text-gray-300">
+                  <span className="font-semibold text-primary-600 dark:text-primary-400">Our Mission:</span> {about.mission}
+                </p>
+              </div>
             )}
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="text-center p-4 bg-gray-50 dark:bg-dark-card rounded-xl border border-gray-100 dark:border-gray-800">
-                <h4 className="text-3xl font-bold text-primary-600">50+</h4>
-                <p className="text-gray-600 dark:text-gray-400">Projects Delivered</p>
-              </div>
-              <div className="text-center p-4 bg-gray-50 dark:bg-dark-card rounded-xl border border-gray-100 dark:border-gray-800">
-                <h4 className="text-3xl font-bold text-primary-600">100%</h4>
-                <p className="text-gray-600 dark:text-gray-400">Client Satisfaction</p>
-              </div>
+            {/* Highlights */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
+              {highlights.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 + index * 0.1 }}
+                  className="flex items-center gap-3"
+                >
+                  <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
+                  <span className="text-slate-700 dark:text-gray-400 text-sm">{item}</span>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
 
-
-        {/* Certificates Section */}
+        {/* Stats Row */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mt-20 pt-10 border-t border-gray-200 dark:border-gray-800"
+          transition={{ delay: 0.4 }}
+          className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6"
         >
-          <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-4">Our Certifications</h3>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-10 max-w-xl mx-auto">
-            Industry-recognized certifications that validate our expertise and commitment to excellence.
-          </p>
-
-          {certificates.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {certificates.map((cert, index) => (
-                <motion.div
-                  key={cert.id || index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="group bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:shadow-primary-500/10 transition-all duration-300"
-                >
-                  {cert.image_url ? (
-                    <div className="h-28 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30">
-                      <img
-                        src={cert.image_url}
-                        alt={cert.title}
-                        className="w-full h-full object-contain p-2"
-                        onError={(e) => { e.target.parentElement.innerHTML = '<div class="flex items-center justify-center h-full"><svg class="w-12 h-12 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg></div>'; }}
-                      />
-                    </div>
-                  ) : (
-                    <div className="h-28 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30 flex items-center justify-center">
-                      <svg className="w-12 h-12 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
-                      </svg>
-                    </div>
-                  )}
-                  <div className="p-4 text-center">
-                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm line-clamp-2">{cert.title}</h4>
-                    {cert.issuer && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{cert.issuer}</p>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-wrap justify-center gap-6">
-              {displayCerts.map((cert, index) => (
-                <div key={index} className="flex items-center gap-2 px-6 py-3 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-gray-700">
-                  <div className="w-2 h-2 rounded-full bg-primary-500"></div>
-                  <span className="font-semibold text-gray-700 dark:text-gray-300">{cert}</span>
-                </div>
-              ))}
-            </div>
-          )}
+          {stats.map((stat, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ y: -5 }}
+              className="text-center p-6 bg-gray-50 dark:bg-dark-card rounded-2xl border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all"
+            >
+              <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <stat.icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+              </div>
+              <h4 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                <AnimatedCounter end={stat.value} duration={2000} suffix={stat.suffix} />
+              </h4>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">{stat.label}</p>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
-
-    </section >
+    </section>
   );
 };
 

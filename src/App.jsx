@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { useTheme } from './hooks/useTheme';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 
@@ -9,9 +10,19 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
+import Certificates from './components/Certificates';
 import Services from './components/Services';
+import Testimonials from './components/Testimonials';
+import Team from './components/Team';
+import Clients from './components/Clients';
+import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import WhatsAppButton from './components/WhatsAppButton';
+import Pricing from './components/Pricing';
+import Process from './components/Process';
+import Blog from './components/Blog';
+import BackToTop from './components/BackToTop';
 
 // Admin components
 import AdminLayout from './admin/layouts/AdminLayout';
@@ -23,6 +34,12 @@ import ProjectsPage from './admin/pages/ProjectsPage';
 import CertificatesPage from './admin/pages/CertificatesPage';
 import ServicesPage from './admin/pages/ServicesPage';
 import ContactsPage from './admin/pages/ContactsPage';
+import TestimonialsPage from './admin/pages/TestimonialsPage';
+import TeamPage from './admin/pages/TeamPage';
+import ClientsPage from './admin/pages/ClientsPage';
+import FAQPage from './admin/pages/FAQPage';
+import PricingPage from './admin/pages/PricingPage';
+import BlogPage from './admin/pages/BlogPage';
 
 // Protected Route wrapper
 function ProtectedRoute({ children }) {
@@ -53,44 +70,62 @@ function HomePage() {
       <main>
         <Hero theme={theme} />
         <About />
-        <Projects projects={[]} /> {/* Projects fetched internally or passed if needed, but for now Projects component has fallback. Ideally fetching should be moved up or duplicated. */}
         <Services />
+        <Clients />
+        <Projects />
+        <Process />
+        <Testimonials />
+        <Team />
+        <Pricing />
+        <Certificates />
+        <Blog />
+        <FAQ />
         <Contact />
       </main>
       <Footer />
+      <WhatsAppButton />
+      <BackToTop />
     </div>
   );
 }
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
+    <LanguageProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<HomePage />} />
 
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<LoginPage />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<DashboardPage />} />
-            <Route path="hero" element={<HeroPage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="projects" element={<ProjectsPage />} />
-            <Route path="certificates" element={<CertificatesPage />} />
-            <Route path="services" element={<ServicesPage />} />
-            <Route path="contacts" element={<ContactsPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<LoginPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<DashboardPage />} />
+              <Route path="hero" element={<HeroPage />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="projects" element={<ProjectsPage />} />
+              <Route path="certificates" element={<CertificatesPage />} />
+              <Route path="services" element={<ServicesPage />} />
+              <Route path="testimonials" element={<TestimonialsPage />} />
+              <Route path="team" element={<TeamPage />} />
+              <Route path="clients" element={<ClientsPage />} />
+              <Route path="faq" element={<FAQPage />} />
+              <Route path="pricing" element={<PricingPage />} />
+              <Route path="blog" element={<BlogPage />} />
+              <Route path="contacts" element={<ContactsPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </LanguageProvider>
   );
 }
 

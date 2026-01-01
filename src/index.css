@@ -9,25 +9,53 @@
   }
 
   body {
-    @apply antialiased text-gray-800 dark:text-gray-100 bg-[#f8fafc] dark:bg-dark-bg transition-colors duration-300;
+    @apply antialiased text-slate-800 dark:text-gray-100 bg-white dark:bg-dark-bg transition-colors duration-300;
+  }
+
+  /* Light mode - improved typography contrast */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-slate-900 dark:text-white font-bold;
+  }
+
+  p {
+    @apply text-slate-700 dark:text-gray-300;
   }
 
   /* Custom Selection Color */
   ::selection {
-    @apply bg-primary-500/15 text-primary-700 dark:text-primary-300;
+    @apply bg-primary-500/20 text-primary-800 dark:text-primary-300;
   }
 }
 
 @layer components {
 
-  /* Improved card shadows for light theme - crisper, more modern */
+  /* Light mode cards - crisp borders and shadows */
   .card-light {
-    @apply bg-white border border-slate-200/60 shadow-[0_2px_12px_-4px_rgba(0, 0, 0, 0.04)] hover:shadow-[0_4px_16px_-4px_rgba(0, 0, 0, 0.08)] hover:border-slate-300/80 transition-all duration-300;
+    @apply bg-white border border-slate-200 shadow-[0_1px_3px_0_rgb(0, 0, 0, 0.1), 0_1px_2px_-1px_rgb(0, 0, 0, 0.1)] hover:shadow-lg hover:border-slate-300 transition-all duration-300;
   }
 
-  /* Form inputs light theme - cleaner look */
+  /* Form inputs light theme - cleaner look with better contrast */
   .input-light {
-    @apply bg-white border-slate-200 text-slate-800 placeholder-slate-400 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 shadow-sm transition-all;
+    @apply bg-white border-slate-300 text-slate-900 placeholder-slate-500 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/15 shadow-sm transition-all;
+  }
+
+  /* Light mode section backgrounds */
+  .section-light {
+    @apply bg-slate-50;
+  }
+
+  /* Better button contrast in light mode */
+  .btn-light {
+    @apply bg-slate-900 text-white hover:bg-slate-800 shadow-md;
+  }
+
+  .btn-outline-light {
+    @apply border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white;
   }
 }
 
@@ -38,24 +66,86 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  @apply bg-slate-100 dark:bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 dark:bg-gray-700 rounded-full hover:bg-slate-300 dark:hover:bg-primary-600 transition-colors;
+  @apply bg-slate-300 dark:bg-gray-700 rounded-full hover:bg-slate-400 dark:hover:bg-primary-600 transition-colors;
 }
 
 /* Utilities for glassmorphism */
 .glass {
-  @apply bg-white/70 dark:bg-black/40 backdrop-blur-xl border border-white/40 dark:border-white/5 shadow-xl shadow-black/5;
+  @apply bg-white/80 dark:bg-black/40 backdrop-blur-xl border border-slate-200/50 dark:border-white/5 shadow-xl shadow-black/5;
 }
 
 /* Improved focus states */
 *:focus-visible {
-  @apply outline-none ring-2 ring-primary-500/40 ring-offset-1 ring-offset-white dark:ring-offset-dark-bg;
+  @apply outline-none ring-2 ring-primary-500/50 ring-offset-2 ring-offset-white dark:ring-offset-dark-bg;
 }
 
 /* Better text contrast in light mode */
 .text-muted {
-  @apply text-slate-500 dark:text-gray-400;
+  @apply text-slate-600 dark:text-gray-400;
+}
+
+/* Light mode badges */
+.badge-light {
+  @apply bg-slate-100 text-slate-700 border border-slate-200;
+}
+
+@layer utilities {
+  .animate-shine {
+    animation: shine 3s infinite linear;
+    background-size: 200% auto;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-scroll {
+    animation: scroll 30s linear infinite;
+  }
+
+  .animate-scroll:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }

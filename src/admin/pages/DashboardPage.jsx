@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import { Link } from 'react-router-dom';
@@ -18,10 +19,19 @@ export default function DashboardPage() {
   const [recentContacts, setRecentContacts] = useState([]);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [greeting, setGreeting] = useState('');
 
   useEffect(() => {
     loadStats();
+    setGreeting(getGreeting());
   }, []);
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+  };
 
   const loadStats = async () => {
     try {
@@ -80,6 +90,22 @@ export default function DashboardPage() {
     { name: 'Jun', projects: stats.projects, contacts: stats.contacts },
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -89,57 +115,65 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className="space-y-8"
+    >
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back! Here's what's happening with your site.</p>
-      </div>
+      <motion.div variants={itemVariants}>
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          {greeting}, Admin <span className="text-2xl">👋</span>
+        </h1>
+        <p className="text-slate-600 dark:text-gray-400 mt-1">Here's what's happening with your site today.</p>
+      </motion.div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map(({ label, value, icon: Icon, gradient, path, badge }) => (
-          <Link
-            key={label}
-            to={path}
-            className="group relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-none transition-all duration-300 overflow-hidden"
-          >
-            <div className={`absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br ${gradient} rounded-full opacity-10 group-hover:opacity-20 transition-opacity`}></div>
+          <motion.div key={label} variants={itemVariants}>
+            <Link
+              to={path}
+              className="group relative block bg-white dark:bg-gray-800 rounded-2xl p-6 border border-slate-200 dark:border-gray-700 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none transition-all duration-300 overflow-hidden hover:-translate-y-1"
+            >
+              <div className={`absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br ${gradient} rounded-full opacity-10 group-hover:opacity-20 transition-opacity`}></div>
 
-            <div className="relative flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</p>
-                <p className="text-4xl font-bold text-gray-900 dark:text-white mt-2">{value}</p>
+              <div className="relative flex items-start justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600 dark:text-gray-400">{label}</p>
+                  <p className="text-4xl font-bold text-slate-900 dark:text-white mt-2">{value}</p>
+                </div>
+                <div className={`p-3 bg-gradient-to-br ${gradient} rounded-xl shadow-lg group-hover:scale-110 transition-transform`}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
               </div>
-              <div className={`p-3 bg-gradient-to-br ${gradient} rounded-xl shadow-lg`}>
-                <Icon className="w-6 h-6 text-white" />
+
+              {badge > 0 && (
+                <span className="absolute top-3 right-3 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
+                  {badge}
+                </span>
+              )}
+
+              <div className="mt-4 flex items-center text-sm text-gray-400 group-hover:text-primary-600 transition-colors">
+                <span>View details</span>
+                <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
-            </div>
-
-            {badge > 0 && (
-              <span className="absolute top-3 right-3 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
-                {badge}
-              </span>
-            )}
-
-            <div className="mt-4 flex items-center text-sm text-gray-400 group-hover:text-primary-600 transition-colors">
-              <span>View details</span>
-              <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
         ))}
       </div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Activity Chart */}
-        <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
+        <motion.div variants={itemVariants} className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl border border-slate-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-gradient-to-br from-primary-500 to-purple-600 rounded-lg">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Activity Overview</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Activity Overview</h2>
             </div>
           </div>
           <div className="h-64">
@@ -155,19 +189,20 @@ export default function DashboardPage() {
                     <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
-                <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} />
-                <YAxis stroke="#9ca3af" fontSize={12} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
+                <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#1f2937',
                     border: 'none',
                     borderRadius: '12px',
-                    color: '#fff'
+                    color: '#fff',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                   }}
                 />
-                <Area type="monotone" dataKey="projects" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorProjects)" />
-                <Area type="monotone" dataKey="contacts" stroke="#8b5cf6" strokeWidth={2} fillOpacity={1} fill="url(#colorContacts)" />
+                <Area type="monotone" dataKey="projects" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorProjects)" />
+                <Area type="monotone" dataKey="contacts" stroke="#8b5cf6" strokeWidth={3} fillOpacity={1} fill="url(#colorContacts)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -181,11 +216,11 @@ export default function DashboardPage() {
               <span className="text-sm text-gray-500 dark:text-gray-400">Contacts</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Content Distribution Pie */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Content Distribution</h2>
+        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl border border-slate-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Content Distribution</h2>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -193,13 +228,14 @@ export default function DashboardPage() {
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={50}
-                  outerRadius={70}
+                  innerRadius={60}
+                  outerRadius={80}
                   paddingAngle={5}
                   dataKey="value"
+                  cornerRadius={4}
                 >
                   {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
                   ))}
                 </Pie>
                 <Tooltip
@@ -213,60 +249,62 @@ export default function DashboardPage() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="grid grid-cols-2 gap-2 mt-4">
+          <div className="grid grid-cols-2 gap-3 mt-6">
             {pieData.map((item) => (
               <div key={item.name} className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }}></div>
-                <span className="text-xs text-gray-500 dark:text-gray-400">{item.name}: {item.value}</span>
+                <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{item.name}: {item.value}</span>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Quick Actions */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
+        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl border border-slate-200 dark:border-gray-700 p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-4">
             {quickActions.map(({ label, icon: Icon, path, desc }) => (
               <Link
                 key={label}
                 to={path}
-                className="group p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-primary-50 dark:hover:bg-primary-900/20 border border-transparent hover:border-primary-200 dark:hover:border-primary-800 transition-all"
+                className="group p-4 bg-slate-50 dark:bg-gray-700/50 rounded-xl hover:bg-primary-50 dark:hover:bg-primary-900/20 border border-transparent hover:border-primary-200 dark:hover:border-primary-800 transition-all"
               >
                 <Icon className="w-8 h-8 text-primary-600 mb-3 group-hover:scale-110 transition-transform" />
-                <p className="font-medium text-gray-900 dark:text-white">{label}</p>
+                <p className="font-medium text-slate-900 dark:text-white group-hover:text-primary-600 transition-colors">{label}</p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{desc}</p>
               </Link>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Recent Messages */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
+        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl border border-slate-200 dark:border-gray-700 p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Messages</h2>
-            <Link to="/admin/contacts" className="text-sm text-primary-600 hover:underline">View all</Link>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Recent Messages</h2>
+            <Link to="/admin/contacts" className="text-sm font-medium text-primary-600 hover:text-primary-700 hover:underline">View all</Link>
           </div>
           {recentContacts.length > 0 ? (
             <div className="space-y-4">
               {recentContacts.map((contact) => (
-                <div key={contact.id} className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <div key={contact.id} className="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border border-transparent hover:border-gray-100 dark:hover:border-gray-700">
+                  <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                     <span className="text-white font-medium text-sm">{contact.name?.[0]?.toUpperCase()}</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium text-gray-900 dark:text-white truncate">{contact.name}</p>
-                      {!contact.is_read && <span className="w-2 h-2 bg-primary-500 rounded-full"></span>}
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-medium text-slate-900 dark:text-white truncate">{contact.name}</p>
+                      <span className="text-xs text-gray-400 flex-shrink-0 flex items-center gap-1">
+                        <Clock size={12} />
+                        {new Date(contact.submitted_at).toLocaleDateString()}
+                      </span>
                     </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{contact.subject || contact.message}</p>
-                    <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
-                      <Clock size={12} />
-                      {new Date(contact.submitted_at).toLocaleDateString()}
-                    </p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      {!contact.is_read && <span className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span>}
+                      <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{contact.subject || contact.message}</p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -277,8 +315,8 @@ export default function DashboardPage() {
               <p>No messages yet</p>
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

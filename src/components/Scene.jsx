@@ -20,15 +20,15 @@ function Snow({ count = 1500, color, speed = 1 }) {
     if (points.current) {
       const positions = points.current.geometry.attributes.position.array;
       for (let i = 0; i < count; i++) {
-        
-        positions[i * 3 + 1] -= delta * (0.5 + Math.random() * 0.5) * speed; 
+
+        positions[i * 3 + 1] -= delta * (0.5 + Math.random() * 0.5) * speed;
 
         positions[i * 3] += Math.sin(state.clock.elapsedTime + i) * 0.002;
 
         if (positions[i * 3 + 1] < -10) {
           positions[i * 3 + 1] = 10;
-          
-          positions[i * 3] = (Math.random() - 0.5) * 20; 
+
+          positions[i * 3] = (Math.random() - 0.5) * 20;
           positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
         }
       }

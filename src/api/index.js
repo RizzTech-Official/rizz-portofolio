@@ -88,5 +88,59 @@ export const uploadAPI = {
   deleteImage: (path) => api.delete('/upload', { data: { path } }),
 };
 
-export default api;
+// Testimonials API
+export const testimonialsAPI = {
+  getAll: () => api.get('/testimonials'),
+  getOne: (id) => api.get(`/testimonials/${id}`),
+  create: (data) => api.post('/testimonials', data),
+  update: (id, data) => api.put(`/testimonials/${id}`, data),
+  delete: (id) => api.delete(`/testimonials/${id}`),
+};
 
+// Team API
+export const teamAPI = {
+  getAll: () => api.get('/team'),
+  getOne: (id) => api.get(`/team/${id}`),
+  create: (data) => api.post('/team', data),
+  update: (id, data) => api.put(`/team/${id}`, data),
+  delete: (id) => api.delete(`/team/${id}`),
+};
+
+// Clients API
+export const clientsAPI = {
+  getAll: () => api.get('/clients'),
+  getOne: (id) => api.get(`/clients/${id}`),
+  create: (data) => api.post('/clients', data),
+  update: (id, data) => api.put(`/clients/${id}`, data),
+  delete: (id) => api.delete(`/clients/${id}`),
+};
+
+// FAQ API
+export const faqAPI = {
+  getAll: () => api.get('/faq'),
+  getOne: (id) => api.get(`/faq/${id}`),
+  create: (data) => api.post('/faq', data),
+  update: (id, data) => api.put(`/faq/${id}`, data),
+  delete: (id) => api.delete(`/faq/${id}`),
+};
+
+// Pricing API
+export const pricingAPI = {
+  getAll: () => api.get('/pricing'),
+  getOne: (id) => api.get(`/pricing/${id}`),
+  create: (data) => api.post('/pricing', data),
+  update: (id, data) => api.put(`/pricing/${id}`, data),
+  delete: (id) => api.delete(`/pricing/${id}`),
+};
+
+// Blog API
+export const blogAPI = {
+  getAll: () => api.get('/blog'),
+  getAdminAll: () => api.get('/blog/admin'),
+  getOne: (id) => api.get(`/blog/${id}`),
+  create: (data) => api.post('/blog', data),
+  update: (id, data) => api.put(`/blog/${id}`, data),
+  delete: (id) => api.delete(`/blog/${id}`),
+};
+
+export default api;
