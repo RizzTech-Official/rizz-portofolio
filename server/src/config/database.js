@@ -143,8 +143,11 @@ export const dbHelper = {
 
       return {
         run: async (...params) => {
-          const result = await pgPool.query(pgSqlFixed + ' RETURNING id', params);
-          return { lastInsertRowid: result.rows[0]?.id };
+          // Only add RETURNING id for INSERT statements
+          const isInsert = pgSqlFixed.trim().toUpperCase().startsWith('INSERT');
+          const query = isInsert ? pgSqlFixed + ' RETURNING id' : pgSqlFixed;
+          const result = await pgPool.query(query, params);
+          return { lastInsertRowid: isInsert ? result.rows[0]?.id : null };
         },
         get: async (...params) => {
           const result = await pgPool.query(pgSqlFixed, params);
