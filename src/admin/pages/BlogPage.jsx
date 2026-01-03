@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { blogAPI, uploadAPI } from '../../api';
+import { blogAPI, uploadAPI, getImageUrl } from '../../api';
 import { Plus, Edit, Trash2, X, BookOpen, Calendar, Eye, EyeOff, Upload, Clock } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 
@@ -111,7 +111,7 @@ export default function BlogPage() {
             <div key={post.id} className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border dark:border-gray-700 flex gap-4">
               <div className="w-32 h-20 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
                 {post.image_url ? (
-                  <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
+                  <img src={getImageUrl(post.image_url)} alt={post.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
                     <BookOpen className="text-gray-400" size={24} />
@@ -161,7 +161,7 @@ export default function BlogPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-40 h-24 rounded-lg border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
                     {formData.image_url ? (
-                      <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                      <img src={getImageUrl(formData.image_url)} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
                       <Upload className="text-gray-400" size={24} />
                     )}
