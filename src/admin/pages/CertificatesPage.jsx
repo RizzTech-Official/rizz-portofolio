@@ -1,5 +1,5 @@
-    import { useEffect, useState } from 'react';
-import { certificatesAPI, uploadAPI } from '../../api';
+import { useEffect, useState } from 'react';
+import { certificatesAPI, uploadAPI, getImageUrl } from '../../api';
 import { Plus, Edit, Trash2, X, Save, Award, Calendar, ExternalLink, Image, Upload, Building2 } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 
@@ -139,7 +139,7 @@ export default function CertificatesPage() {
               <div className="h-40 bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 relative overflow-hidden">
                 {cert.image_url ? (
                   <img
-                    src={cert.image_url}
+                    src={getImageUrl(cert.image_url)}
                     alt={cert.title}
                     className="w-full h-full object-cover"
                     onError={(e) => { e.target.style.display = 'none'; }}
@@ -239,15 +239,15 @@ export default function CertificatesPage() {
                   <span className="flex items-center gap-2"><Image size={16} /> Image URL (optional)</span>
                 </label>
                 <input
-                  type="url"
+                  type="text"
                   value={formData.image_url}
                   onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
-                  placeholder="https://example.com/certificate.jpg"
+                  placeholder="https://example.com/certificate.jpg or /uploads/..."
                 />
                 {formData.image_url && (
                   <div className="mt-3 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600">
-                    <img src={formData.image_url} alt="Preview" className="w-full h-32 object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
+                    <img src={getImageUrl(formData.image_url)} alt="Preview" className="w-full h-32 object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
                   </div>
                 )}
               </div>

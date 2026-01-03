@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, Github, Calendar, User, Tag, ArrowRight } from 'lucide-react';
+import { getImageUrl } from '../api';
 
 const ProjectDetailModal = ({ project, isOpen, onClose }) => {
   if (!project) return null;
@@ -30,7 +31,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
               {/* Header with Image */}
               <div className="relative h-64 md:h-80 flex-shrink-0">
                 <img
-                  src={project.image_url || 'https://images.unsplash.com/photo-1661956602116-aa6865609028?w=1200'}
+                  src={getImageUrl(project.image_url) || 'https://images.unsplash.com/photo-1661956602116-aa6865609028?w=1200'}
                   alt={project.title}
                   className="w-full h-full object-cover"
                 />

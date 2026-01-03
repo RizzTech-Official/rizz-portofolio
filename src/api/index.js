@@ -1,6 +1,26 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+// Use environment variable for production, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const SERVER_BASE_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001';
+
+// Helper to get full image URL
+export const getImageUrl = (url) => {
+  if (!url) return null;
+  // Already a full URL (Cloudinary, external, etc.)
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  // Relative URL from server (/uploads/...)
+  if (url.startsWith('/uploads/')) {
+    return `${SERVER_BASE_URL}${url}`;
+  }
+  // Other relative paths
+  if (url.startsWith('/')) {
+    return `${SERVER_BASE_URL}${url}`;
+  }
+  return url;
+};
 
 const api = axios.create({
   baseURL: API_BASE_URL,

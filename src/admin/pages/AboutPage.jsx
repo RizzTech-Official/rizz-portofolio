@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { aboutAPI, uploadAPI } from '../../api';
+import { aboutAPI, uploadAPI, getImageUrl } from '../../api';
 import { Save, AlertCircle, CheckCircle, Info, Upload, Loader2 } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 
@@ -95,16 +95,16 @@ export default function AboutPage() {
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl text-white">
           <Info size={24} />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">About Section</h1>
+        </div>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">About Section</h1>
       </div>
 
       {message.text && (
-        <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.type === 'success' 
-        ? 'bg-green-50 text-green-600' 
-        : 'bg-red-50 text-red-600'}`}>
-        {message.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
-        <span>{message.text}</span>
+        <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.type === 'success'
+          ? 'bg-green-50 text-green-600'
+          : 'bg-red-50 text-red-600'}`}>
+          {message.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+          <span>{message.text}</span>
         </div>
       )}
 
@@ -121,7 +121,7 @@ export default function AboutPage() {
             </label>
             {/* Preview */}
             <div className="h-32 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700">
-              {formData.image_url ? <img src={formData.image_url} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center h-full text-gray-400">No Image</div>}
+              {formData.image_url ? <img src={getImageUrl(formData.image_url)} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center h-full text-gray-400">No Image</div>}
             </div>
           </div>
         </div>

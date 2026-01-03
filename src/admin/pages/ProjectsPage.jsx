@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { projectsAPI, uploadAPI } from '../../api';
+import { projectsAPI, uploadAPI, getImageUrl } from '../../api';
 import { Plus, Edit, Trash2, X, Save, ExternalLink, Github, Image, Star, Upload, Loader2, Tag, Link2, Code } from 'lucide-react';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 
@@ -150,7 +150,7 @@ export default function ProjectsPage() {
               {/* Image */}
               <div className="h-48 bg-gray-100 dark:bg-gray-700 relative overflow-hidden">
                 {project.image_url ? (
-                  <img src={project.image_url} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={getImageUrl(project.image_url)} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 ) : (
                   <div className="flex h-full items-center justify-center text-gray-400"><Image size={48} /></div>
                 )}
@@ -271,7 +271,7 @@ export default function ProjectsPage() {
                     </div>
                   </div>
                   <input
-                    type="url"
+                    type="text"
                     name="image_url"
                     value={formData.image_url}
                     onChange={handleChange}
@@ -280,7 +280,7 @@ export default function ProjectsPage() {
                   />
                 </div>
                 {formData.image_url && (
-                  <img src={formData.image_url} alt="Preview" className="mt-3 w-full h-32 object-cover rounded-lg" />
+                  <img src={getImageUrl(formData.image_url)} alt="Preview" className="mt-3 w-full h-32 object-cover rounded-lg" />
                 )}
               </div>
 

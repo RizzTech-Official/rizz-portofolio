@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle, AlertCircle, Mail, User, MessageSquare } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Mail, User, MessageSquare, Sparkles } from 'lucide-react';
 import { contactsAPI } from '../api';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -36,71 +36,93 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-24 bg-slate-50 dark:bg-[#0a0a0a] transition-colors duration-300">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="py-28 relative overflow-hidden">
+      {/* Premium Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50/50 to-white dark:from-dark-bg dark:via-dark-surface/30 dark:to-dark-bg -z-10" />
+
+      {/* Decorative Orbs */}
+      <div className="absolute top-20 left-1/4 w-72 h-72 bg-gradient-to-br from-primary-400/15 to-purple-400/15 rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-gradient-to-br from-cyan-400/10 to-blue-400/10 rounded-full blur-3xl -z-10" />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
         >
-          <span className="text-primary-600 dark:text-primary-400 font-semibold tracking-wider uppercase text-sm">{t('contact.badge')}</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mt-3 mb-6">{t('contact.title')}</h2>
-          <p className="text-lg text-slate-700 dark:text-gray-400 max-w-2xl mx-auto">
+          <motion.span className="badge-primary mb-4">
+            <Sparkles className="w-4 h-4 mr-1" />
+            {t('contact.badge')}
+          </motion.span>
+          <h2 className="section-title mt-4 mb-6">{t('contact.title')}</h2>
+          <p className="text-lg text-slate-600 dark:text-gray-400 max-w-2xl mx-auto">
             {t('contact.subtitle')}
           </p>
         </motion.div>
 
+        {/* Contact Form Card */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-white dark:bg-white/5 rounded-3xl shadow-xl dark:shadow-none border border-slate-200 dark:border-white/10 p-8 md:p-12"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="relative bg-white dark:bg-dark-card rounded-3xl p-8 md:p-12 border border-slate-100 dark:border-gray-800 shadow-xl shadow-slate-900/5"
         >
+          {/* Glow effect */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-primary-500/10 via-purple-500/10 to-cyan-500/10 rounded-3xl blur-xl -z-10" />
+
+          {/* Status Message */}
           {status.message && (
-            <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${status.type === 'success'
-              ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800'
-              : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'
-              }`}>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`mb-8 p-4 rounded-2xl flex items-center gap-3 ${status.type === 'success'
+                  ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800/50'
+                  : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50'
+                }`}
+            >
               {status.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
-              <span>{status.message}</span>
-            </div>
+              <span className="font-medium">{status.message}</span>
+            </motion.div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-slate-800 dark:text-gray-300 mb-2">
+              {/* Name */}
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300">
                   {t('contact.form.name')}
                 </label>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div className="relative group">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-primary-500 transition-colors" />
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                    className="input-premium pl-12"
                     placeholder="John Doe"
                     required
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              {/* Email */}
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300">
                   Email Address
                 </label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-primary-500 transition-colors" />
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                    className="input-premium pl-12"
                     placeholder="john@example.com"
                     required
                   />
@@ -108,8 +130,9 @@ const Contact = () => {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            {/* Subject */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300">
                 Subject
               </label>
               <input
@@ -117,43 +140,47 @@ const Contact = () => {
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                className="input-premium"
                 placeholder="Project Inquiry"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            {/* Message */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300">
                 Message
               </label>
-              <div className="relative">
-                <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
+              <div className="relative group">
+                <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-slate-400 group-focus-within:text-primary-500 transition-colors" />
                 <textarea
                   name="message"
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none"
+                  className="input-premium pl-12 resize-none"
                   placeholder="Tell us about your project..."
                   required
                 />
               </div>
             </div>
 
-            <button
+            {/* Submit Button */}
+            <motion.button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40"
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full relative overflow-hidden flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-primary-600 via-primary-500 to-cyan-500 hover:from-primary-500 hover:via-cyan-500 hover:to-primary-500 disabled:opacity-60 text-white font-semibold rounded-2xl shadow-xl shadow-primary-500/25 transition-all duration-500"
             >
               {loading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
                   <Send size={20} />
-                  Send Message
+                  <span>Send Message</span>
                 </>
               )}
-            </button>
+            </motion.button>
           </form>
         </motion.div>
       </div>

@@ -9,98 +9,128 @@
   }
 
   body {
-    @apply antialiased text-slate-800 dark:text-gray-100 bg-white dark:bg-dark-bg transition-colors duration-300;
+    @apply antialiased text-slate-800 dark:text-gray-100 bg-white dark:bg-dark-bg transition-colors duration-500;
   }
 
-  /* Light mode - improved typography contrast */
+  /* Typography with better contrast */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply text-slate-900 dark:text-white font-bold;
+    @apply text-slate-900 dark:text-white font-bold tracking-tight;
   }
 
   p {
-    @apply text-slate-700 dark:text-gray-300;
+    @apply text-slate-600 dark:text-gray-300 leading-relaxed;
   }
 
-  /* Custom Selection Color */
+  /* Custom Selection */
   ::selection {
-    @apply bg-primary-500/20 text-primary-800 dark:text-primary-300;
+    @apply bg-primary-500/20 text-primary-900 dark:text-primary-200;
   }
 }
 
 @layer components {
 
-  /* Light mode cards - crisp borders and shadows */
-  .card-light {
-    @apply bg-white border border-slate-200 shadow-[0_1px_3px_0_rgb(0, 0, 0, 0.1), 0_1px_2px_-1px_rgb(0, 0, 0, 0.1)] hover:shadow-lg hover:border-slate-300 transition-all duration-300;
+  /* Premium Glass Card */
+  .glass-card {
+    @apply bg-white/70 dark:bg-white/5 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20;
   }
 
-  /* Form inputs light theme - cleaner look with better contrast */
-  .input-light {
-    @apply bg-white border-slate-300 text-slate-900 placeholder-slate-500 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/15 shadow-sm transition-all;
+  /* Glass Navbar */
+  .glass-nav {
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/5;
   }
 
-  /* Light mode section backgrounds */
-  .section-light {
-    @apply bg-slate-50;
+  /* Premium Button */
+  .btn-primary {
+    @apply relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300;
   }
 
-  /* Better button contrast in light mode */
-  .btn-light {
-    @apply bg-slate-900 text-white hover:bg-slate-800 shadow-md;
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-white/0 via-white/25 to-white/0 -translate-x-full;
+    animation: shimmer 2s infinite;
   }
 
-  .btn-outline-light {
-    @apply border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white;
+  .btn-secondary {
+    @apply bg-slate-900 dark:bg-white/10 text-white font-semibold px-6 py-3 rounded-xl border border-slate-800 dark:border-white/10 hover:bg-slate-800 dark:hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300;
+  }
+
+  /* Premium Card */
+  .card-premium {
+    @apply bg-white dark:bg-gray-800/50 rounded-2xl border border-slate-200/80 dark:border-white/5 shadow-lg shadow-slate-900/5 dark:shadow-black/20 hover:shadow-xl hover:shadow-primary-500/10 hover:-translate-y-1 transition-all duration-500;
+  }
+
+  /* Form Input Premium */
+  .input-premium {
+    @apply w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-slate-200 dark:border-gray-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all duration-300;
+  }
+
+  /* Badge */
+  .badge-primary {
+    @apply inline-flex items-center px-4 py-1.5 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-300 font-medium text-sm border border-primary-100 dark:border-primary-800/50;
+  }
+
+  /* Section Title */
+  .section-title {
+    @apply text-4xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-tight;
+  }
+
+  /* Glow Effect */
+  .glow-primary {
+    @apply shadow-lg shadow-primary-500/20;
+  }
+
+  .glow-hover:hover {
+    @apply shadow-xl shadow-primary-500/30;
   }
 }
 
-/* Custom Scrollbar - minimal */
+/* Premium Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-100 dark:bg-transparent;
+  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-gray-700 rounded-full hover:bg-slate-400 dark:hover:bg-primary-600 transition-colors;
+  @apply bg-slate-300 dark:bg-gray-700 rounded-full;
 }
 
-/* Utilities for glassmorphism */
-.glass {
-  @apply bg-white/80 dark:bg-black/40 backdrop-blur-xl border border-slate-200/50 dark:border-white/5 shadow-xl shadow-black/5;
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-gray-600;
 }
 
 /* Improved focus states */
 *:focus-visible {
-  @apply outline-none ring-2 ring-primary-500/50 ring-offset-2 ring-offset-white dark:ring-offset-dark-bg;
-}
-
-/* Better text contrast in light mode */
-.text-muted {
-  @apply text-slate-600 dark:text-gray-400;
-}
-
-/* Light mode badges */
-.badge-light {
-  @apply bg-slate-100 text-slate-700 border border-slate-200;
+  @apply outline-none ring-2 ring-primary-500/50 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
 }
 
 @layer utilities {
-  .animate-shine {
-    animation: shine 3s infinite linear;
-    background-size: 200% auto;
+
+  /* Animations */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
 
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-gradient {
+    animation: gradient 8s ease infinite;
+    background-size: 200% 200%;
+  }
+
+  .animate-shine {
+    animation: shine 3s linear infinite;
+    background-size: 200% auto;
   }
 
   .animate-scroll {
@@ -110,9 +140,54 @@
   .animate-scroll:hover {
     animation-play-state: paused;
   }
+
+  /* Gradient Text */
+  .text-gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary-500 via-purple-500 to-primary-600;
+  }
+
+  /* 3D Tilt on hover */
+  .tilt-hover {
+    transition: transform 0.3s ease;
+  }
+
+  .tilt-hover:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) scale(1.02);
+  }
 }
 
-@keyframes shine {
+/* Keyframes */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(0, 180, 216, 0.5);
+  }
+}
+
+@keyframes gradient {
   0% {
     background-position: 0% 50%;
   }
@@ -126,17 +201,13 @@
   }
 }
 
-@keyframes float {
+@keyframes shine {
   0% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-10px);
+    background-position: -200% center;
   }
 
   100% {
-    transform: translateY(0px);
+    background-position: 200% center;
   }
 }
 
@@ -148,4 +219,22 @@
   100% {
     transform: translateX(-50%);
   }
+}
+
+/* Custom scrollbar for admin sidebar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
