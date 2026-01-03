@@ -177,7 +177,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minHeight={200} minWidth={200}>
               <AreaChart data={activityData}>
                 <defs>
                   <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
@@ -222,7 +222,7 @@ export default function DashboardPage() {
         <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl border border-slate-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Content Distribution</h2>
           <div className="h-48">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minHeight={180} minWidth={180}>
               <PieChart>
                 <Pie
                   data={pieData}
