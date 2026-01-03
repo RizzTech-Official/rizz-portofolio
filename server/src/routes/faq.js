@@ -10,7 +10,7 @@ const toBool = (val) => val === 1 || val === true;
 // GET /api/faq
 router.get('/', async (req, res) => {
   try {
-    const faqs = await dbHelper.prepare('SELECT * FROM faqs WHERE is_active = 1 ORDER BY `order` ASC, created_at ASC').all();
+    const faqs = await dbHelper.prepare('SELECT * FROM faqs WHERE is_active = true ORDER BY "order" ASC, created_at ASC').all();
     res.json(faqs.map(f => ({ ...f, is_active: toBool(f.is_active) })));
   } catch (error) {
     console.error('Get faqs error:', error);
@@ -40,7 +40,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const { question, answer, category, is_active, order } = req.body;
 
     const result = await dbHelper.prepare(`
-      INSERT INTO faqs (question, answer, category, is_active, \`order\`)
+      INSERT INTO faqs (question, answer, category, is_active, "order")
       VALUES (?, ?, ?, ?, ?)
     `).run(question, answer, category, is_active ? 1 : 0, order || 0);
 
@@ -64,8 +64,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
     await dbHelper.prepare(`
       UPDATE faqs SET 
-        question = ?, answer = ?, category = ?, is_active = ?, \`order\` = ?,
-        updated_at = NOW()
+        question = ?, answer = ?, category = ?, is_active = ?, "order" = ?,
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).run(question, answer, category, is_active ? 1 : 0, order, parseInt(req.params.id));
 

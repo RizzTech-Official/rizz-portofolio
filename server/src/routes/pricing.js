@@ -27,7 +27,7 @@ const formatPricing = (p) => ({
 // GET /api/pricing
 router.get('/', async (req, res) => {
   try {
-    const packages = await dbHelper.prepare('SELECT * FROM pricing_packages WHERE is_active = 1 ORDER BY `order` ASC, created_at ASC').all();
+    const packages = await dbHelper.prepare('SELECT * FROM pricing_packages WHERE is_active = true ORDER BY "order" ASC, created_at ASC').all();
     res.json(packages.map(formatPricing));
   } catch (error) {
     console.error('Get pricing error:', error);
@@ -60,7 +60,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const notIncludedJson = JSON.stringify(not_included || []);
 
     const result = await dbHelper.prepare(`
-      INSERT INTO pricing_packages (name, description, price_monthly, price_yearly, features, not_included, is_popular, icon, is_active, \`order\`)
+      INSERT INTO pricing_packages (name, description, price_monthly, price_yearly, features, not_included, is_popular, icon, is_active, "order")
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(name, description, price_monthly, price_yearly, featuresJson, notIncludedJson, is_popular ? 1 : 0, icon, is_active ? 1 : 0, order || 0);
 
@@ -88,8 +88,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
     await dbHelper.prepare(`
       UPDATE pricing_packages SET 
         name = ?, description = ?, price_monthly = ?, price_yearly = ?, 
-        features = ?, not_included = ?, is_popular = ?, icon = ?, is_active = ?, \`order\` = ?,
-        updated_at = NOW()
+        features = ?, not_included = ?, is_popular = ?, icon = ?, is_active = ?, "order" = ?,
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).run(name, description, price_monthly, price_yearly, featuresJson, notIncludedJson, is_popular ? 1 : 0, icon, is_active ? 1 : 0, order, parseInt(req.params.id));
 

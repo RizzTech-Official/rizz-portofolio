@@ -23,7 +23,7 @@ const generateSlug = (title) => {
 // GET /api/blog (public - only published posts)
 router.get('/', async (req, res) => {
   try {
-    const posts = await dbHelper.prepare('SELECT * FROM blog_posts WHERE is_published = 1 ORDER BY published_at DESC, created_at DESC').all();
+    const posts = await dbHelper.prepare('SELECT * FROM blog_posts WHERE is_published = true ORDER BY published_at DESC, created_at DESC').all();
     res.json(posts.map(formatBlog));
   } catch (error) {
     console.error('Get blog posts error:', error);
@@ -71,7 +71,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const finalPublishedAt = is_published ? (published_at || new Date().toISOString()) : null;
 
     const result = await dbHelper.prepare(`
-      INSERT INTO blog_posts (title, slug, excerpt, content, image_url, category, author, read_time, is_published, published_at, \`order\`)
+      INSERT INTO blog_posts (title, slug, excerpt, content, image_url, category, author, read_time, is_published, published_at, "order")
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(title, finalSlug, excerpt, content, image_url, category, author, read_time, is_published ? 1 : 0, finalPublishedAt, order || 0);
 
@@ -104,8 +104,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
     await dbHelper.prepare(`
       UPDATE blog_posts SET 
         title = ?, slug = ?, excerpt = ?, content = ?, image_url = ?, 
-        category = ?, author = ?, read_time = ?, is_published = ?, published_at = ?, \`order\` = ?,
-        updated_at = NOW()
+        category = ?, author = ?, read_time = ?, is_published = ?, published_at = ?, "order" = ?,
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).run(title, finalSlug, excerpt, content, image_url, category, author, read_time, is_published ? 1 : 0, finalPublishedAt, order, parseInt(req.params.id));
 

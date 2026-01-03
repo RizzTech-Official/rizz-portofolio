@@ -10,7 +10,7 @@ const toBool = (val) => val === 1 || val === true;
 // GET /api/team
 router.get('/', async (req, res) => {
   try {
-    const members = await dbHelper.prepare('SELECT * FROM team_members WHERE is_active = 1 ORDER BY `order` ASC, created_at ASC').all();
+    const members = await dbHelper.prepare('SELECT * FROM team_members WHERE is_active = true ORDER BY "order" ASC, created_at ASC').all();
     res.json(members.map(m => ({ ...m, is_active: toBool(m.is_active) })));
   } catch (error) {
     console.error('Get team members error:', error);
@@ -40,7 +40,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const { name, position, photo, bio, linkedin_url, github_url, email, is_active, order } = req.body;
 
     const result = await dbHelper.prepare(`
-      INSERT INTO team_members (name, position, photo, bio, linkedin_url, github_url, email, is_active, \`order\`)
+      INSERT INTO team_members (name, position, photo, bio, linkedin_url, github_url, email, is_active, "order")
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(name, position, photo, bio, linkedin_url, github_url, email, is_active ? 1 : 0, order || 0);
 
@@ -65,8 +65,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
     await dbHelper.prepare(`
       UPDATE team_members SET 
         name = ?, position = ?, photo = ?, bio = ?, linkedin_url = ?, 
-        github_url = ?, email = ?, is_active = ?, \`order\` = ?,
-        updated_at = NOW()
+        github_url = ?, email = ?, is_active = ?, "order" = ?,
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).run(name, position, photo, bio, linkedin_url, github_url, email, is_active ? 1 : 0, order, parseInt(req.params.id));
 
