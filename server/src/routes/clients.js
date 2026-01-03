@@ -10,7 +10,7 @@ const toBool = (val) => val === 1 || val === true;
 // GET /api/clients
 router.get('/', async (req, res) => {
   try {
-    const clients = await dbHelper.prepare('SELECT * FROM clients WHERE is_active = 1 ORDER BY `order` ASC, created_at ASC').all();
+    const clients = await dbHelper.prepare('SELECT * FROM clients WHERE is_active = true ORDER BY "order" ASC, created_at ASC').all();
     res.json(clients.map(c => ({ ...c, is_active: toBool(c.is_active) })));
   } catch (error) {
     console.error('Get clients error:', error);
@@ -40,7 +40,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const { name, logo_url, website_url, is_active, order } = req.body;
 
     const result = await dbHelper.prepare(`
-      INSERT INTO clients (name, logo_url, website_url, is_active, \`order\`)
+      INSERT INTO clients (name, logo_url, website_url, is_active, "order")
       VALUES (?, ?, ?, ?, ?)
     `).run(name, logo_url, website_url, is_active ? 1 : 0, order || 0);
 
@@ -64,8 +64,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
     await dbHelper.prepare(`
       UPDATE clients SET 
-        name = ?, logo_url = ?, website_url = ?, is_active = ?, \`order\` = ?,
-        updated_at = NOW()
+        name = ?, logo_url = ?, website_url = ?, is_active = ?, "order" = ?,
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).run(name, logo_url, website_url, is_active ? 1 : 0, order, parseInt(req.params.id));
 

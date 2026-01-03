@@ -10,7 +10,7 @@ const toBool = (val) => val === 1 || val === true;
 // GET /api/testimonials
 router.get('/', async (req, res) => {
   try {
-    const testimonials = await dbHelper.prepare('SELECT * FROM testimonials WHERE is_active = 1 ORDER BY `order` ASC, created_at DESC').all();
+    const testimonials = await dbHelper.prepare('SELECT * FROM testimonials WHERE is_active = true ORDER BY "order" ASC, created_at DESC').all();
     res.json(testimonials.map(t => ({ ...t, is_active: toBool(t.is_active) })));
   } catch (error) {
     console.error('Get testimonials error:', error);
@@ -40,7 +40,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const { client_name, client_photo, company, position, quote, rating, is_active, order } = req.body;
 
     const result = await dbHelper.prepare(`
-      INSERT INTO testimonials (client_name, client_photo, company, position, quote, rating, is_active, \`order\`)
+      INSERT INTO testimonials (client_name, client_photo, company, position, quote, rating, is_active, "order")
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `).run(client_name, client_photo, company, position, quote, rating || 5, is_active ? 1 : 0, order || 0);
 
@@ -65,8 +65,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
     await dbHelper.prepare(`
       UPDATE testimonials SET 
         client_name = ?, client_photo = ?, company = ?, position = ?, quote = ?, 
-        rating = ?, is_active = ?, \`order\` = ?,
-        updated_at = NOW()
+        rating = ?, is_active = ?, "order" = ?,
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).run(client_name, client_photo, company, position, quote, rating, is_active ? 1 : 0, order, parseInt(req.params.id));
 
